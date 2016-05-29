@@ -12,7 +12,7 @@
 
 $("head link:last")
 .after("<link rel=stylesheet type=text/css href=https://steamstore-a.akamaihd.net/public/css/v6/store.css>")
-.after("<style>span.platform_img {background-color: black; height:20px; display: inline-block; opacity: 0.90;} span.lalle__platform {position: absolute; top: 0px; right: 0px;}</style>");
+.after("<style>span.platform_img {background-color: black; height:20px; display: inline-block; opacity: 0.90;} span.lalle__platform {position: relative; bottom: 20px; right: 0px;}</style>");
 
 
 function setPlatformSpan(node, steamlink) {
@@ -58,7 +58,6 @@ function getSteamLink(trade) {
 $("div.trade-cont").each(function () {
   var trade = $(this);
   var steamlink = getSteamLink(trade);
-  //setPlatformSpan(trade.find("div.trade-type"), steamlink);
   setPlatformSpan(trade.find("div.trade_img"), steamlink);
 });
 
