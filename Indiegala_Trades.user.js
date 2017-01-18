@@ -3,7 +3,7 @@
 // @namespace   lalle.se
 // @author      lalle
 // @match       https://www.indiegala.com/trades*
-// @match       https://www.indiegala.com/giveaway*
+// @match       https://www.indiegala.com/giveaways/detail*
 // @require     http://code.jquery.com/jquery-1.11.2.min.js
 // @require     https://cdn.jsdelivr.net/simplestorage/0.2.1/simpleStorage.min.js
 // @version     1
@@ -31,7 +31,6 @@ function setPlatformSpan(node, steamlink) {
 
     if (platformhtml !== undefined && platformhtml.length)  {
         node.append("<a href=\""+ steamlink + "\"><span class=\"lalle__platform\">" + platformhtml + "</span></a>");
-        console.log("Cache append: " + platformhtml);
     }
     else {
         GM_xmlhttpRequest({
@@ -44,28 +43,40 @@ function setPlatformSpan(node, steamlink) {
                         simpleStorage.set(steamlink, platform.html(), {TTL: 2592000000});
                     }
                     node.append("<a href=\""+ steamlink + "\"><span class=\"lalle__platform\">" + platform.html() + "</span></a>");
-                    console.log("Req Append: " + platform.htlm());
                 }
             }
         });
     }
 }
 
-function getSteamLink(trade) {
+function getSteamImgLink(trade) {
     var gameImg = trade.find("img:first");
     var steamapp = gameImg.attr("src").replace("http://cdn.akamai.steamstatic.com/steam/apps/", "").replace("/header.jpg", "");
     var steamlink = "http://store.steampowered.com/app/" + steamapp + "/";
     return steamlink;
 }
 
+function getSteamLink(pNode){
+    var linkNode = pNode.find("a.steam-link");
+    var steamLink = linkNode.attr("href");
+    return steamLink;
+}
+
 $("div.trade-cont").each(function () {
     var trade = $(this);
-    var steamlink = getSteamLink(trade);
+    var steamlink = getSteaImgmLink(trade);
     setPlatformSpan(trade.find("div.trade_img").find("p:first"), steamlink);
 });
 
 $("div.trade-img-cont").each(function() {
     var trade = $(this);
-    var steamlink = getSteamLink(trade);
+    var steamlink = getSteamImgLink(trade);
     setPlatformSpan(trade, steamlink);
+});
+
+$("section.ticket-cont").each(function() {
+    var giveaway = $(this);
+    var steamlink = getSteamLink(giveaway);
+    var appendNode = giveaway.find("div.game-img-cont");
+    setPlatformSpan(appendNode, steamlink);
 });
