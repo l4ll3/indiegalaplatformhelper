@@ -27,8 +27,6 @@ function setPlatformSpan(node, steamlink) {
         console.warn("Unable to use local storage. Retrieving steam platform will be slow!");
     }
 
-    console.log("platformhtml: " + platformhtml);
-
     if (platformhtml !== undefined && platformhtml.length)  {
         node.append("<a href=\""+ steamlink + "\"><span class=\"lalle__platform\">" + platformhtml + "</span></a>");
     }
@@ -64,7 +62,7 @@ function getSteamLink(pNode){
 
 $("div.trade-cont").each(function () {
     var trade = $(this);
-    var steamlink = getSteaImgmLink(trade);
+    var steamlink = getSteamImgLink(trade);
     setPlatformSpan(trade.find("div.trade_img").find("p:first"), steamlink);
 });
 
