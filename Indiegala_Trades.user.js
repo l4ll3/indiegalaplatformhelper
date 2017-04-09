@@ -3,7 +3,7 @@
 // @namespace   lalle.se
 // @author      lalle
 // @match       https://www.indiegala.com/trades*
-// @match       https://www.indiegala.com/giveaways/detail*
+// @match       https://www.indiegala.com/giveaways*
 // @require     http://code.jquery.com/jquery-1.11.2.min.js
 // @require     https://cdn.jsdelivr.net/simplestorage/0.2.1/simpleStorage.min.js
 // @version     1
@@ -49,7 +49,7 @@ function setPlatformSpan(node, steamlink) {
 
 function getSteamImgLink(trade) {
     var gameImg = trade.find("img:first");
-    var steamapp = gameImg.attr("src").replace("http://cdn.akamai.steamstatic.com/steam/apps/", "").replace("/header.jpg", "");
+    var steamapp = gameImg.attr("src").replace("http://cdn.akamai.steamstatic.com/steam/apps/", "").replace("/header.jpg", "").replace("https://steamcdn-a.akamaihd.net/steam/apps/","").replace("/capsule_231x87.jpg", "");
     var steamlink = "http://store.steampowered.com/app/" + steamapp + "/";
     return steamlink;
 }
@@ -72,9 +72,13 @@ $("div.trade-img-cont").each(function() {
     setPlatformSpan(trade, steamlink);
 });
 
-$("section.ticket-cont").each(function() {
-    var giveaway = $(this);
-    var steamlink = getSteamLink(giveaway);
-    var appendNode = giveaway.find("div.game-img-cont");
-    setPlatformSpan(appendNode, steamlink);
+$("div.ticket-left").each(function() {
+    var style = {"bottom":"48px"};
+    if (window.location.href.indexOf("giveaways/detail") != -1) {
+        style = {"bottom":"79px"};
+    }
+    var giveaway = $(this).find("div.game-img-cont");
+    var steamLink = getSteamImgLink(giveaway);
+    setPlatformSpan(giveaway, steamLink);
+    giveaway.find("span:first").css(style);
 });
