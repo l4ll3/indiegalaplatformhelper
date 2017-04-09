@@ -14,7 +14,7 @@ $("head link:last")
     .after("<link rel=stylesheet type=text/css href=https://steamstore-a.akamaihd.net/public/css/v6/store.css>")
     .after("<style>span.platform_img {background-color: black; height:20px; display: inline-block; opacity: 0.90;} span.lalle__platform {position: relative; bottom: 23px; right: 0px;}</style>");
 
-function setPlatformSpan(node, steamlink) {
+function setPlatformSpan(node, steamlink, style) {
     if (!steamlink.length) {
         return;
     }
@@ -29,6 +29,9 @@ function setPlatformSpan(node, steamlink) {
 
     if (platformhtml !== undefined && platformhtml.length)  {
         node.append("<a href=\""+ steamlink + "\"><span class=\"lalle__platform\">" + platformhtml + "</span></a>");
+        if ( style !== undefined ) {
+            node.find(".lalle__platform").css(style);
+        }
     }
     else {
         GM_xmlhttpRequest({
@@ -41,6 +44,9 @@ function setPlatformSpan(node, steamlink) {
                         simpleStorage.set(steamlink, platform.html(), {TTL: 2592000000});
                     }
                     node.append("<a href=\""+ steamlink + "\"><span class=\"lalle__platform\">" + platform.html() + "</span></a>");
+                    if ( style !== undefined ) {
+                        node.find(".lalle__platform").css(style);
+                    }
                 }
             }
         });
@@ -77,8 +83,11 @@ $("div.ticket-left").each(function() {
     if (window.location.href.indexOf("giveaways/detail") != -1) {
         style = {"bottom":"79px"};
     }
+    else if( $(this).closest(".small, .big").hasClass("big")) {
+        style = {"bottom":"74px"};
+    }
+
     var giveaway = $(this).find("div.game-img-cont");
     var steamLink = getSteamImgLink(giveaway);
-    setPlatformSpan(giveaway, steamLink);
-    giveaway.find("span:first").css(style);
+    setPlatformSpan(giveaway, steamLink, style);
 });
